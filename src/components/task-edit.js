@@ -1,5 +1,6 @@
-import {DAYS, MONTH_NAMES, COLORS} from "../const.js";
-import {formatTime, createElement} from "../utils.js";
+import {DAYS, MONTH_NAMES, COLORS} from "../utils/const.js";
+import {formatTime} from "../utils/common.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createColorsMarkup = (colors, currentColor) => {
   return colors
@@ -28,7 +29,7 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
       `<input
           class="visually-hidden card__repeat-${day}-input"
           type="checkbox"
-          id="repeat-${day}-4"
+          id="repeat-${day}-${index}"
           name="repeat"
           value="${day}"
           ${isChecked === day ? `checked` : ``}/>
@@ -103,19 +104,21 @@ export const createTaskEditTemplate = (task) => {
                       </div>
                     </div>
                   </div>
-                  <div class="card__status-btns">
-                    <button class="card__save" type="submit">save</button>
-                    <button class="card__delete" type="button">delete</button>
-                  </div>
                 </div>
-              </form>
-            </article>`
+
+                <div class="card__status-btns">
+                  <button class="card__save" type="submit">save</button>
+                  <button class="card__delete" type="button">delete</button>
+                </div>
+              </div>
+            </form>
+          </article>`
   );
 };
 
-export default class TaskEdit {
+export default class TaskEdit extends AbstractComponent {
   constructor(task) {
-    this._element = null;
+    super();
     this._task = task;
   }
 
@@ -123,15 +126,7 @@ export default class TaskEdit {
     return createTaskEditTemplate(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
   }
 }
