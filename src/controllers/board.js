@@ -123,7 +123,6 @@ export default class BoardController {
 
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
       showingTasksCount = SHOWING_TASKS_COUNT_BY_BUTTON;
-
       const sortedTasks = getSortedTasks(tasks, sortType, 0, showingTasksCount);
 
       taskListElement.innerHTML = ``;
